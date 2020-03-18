@@ -1,142 +1,108 @@
-1、SQL 介绍：
-    结构化查询语句（Structured Query Language），SQL 用来和数据库打交道，完成和数据库的交互，SQL 是一套标准，
-    但是每一个数据库都有自己才有的特性。
+## 1、SQL 介绍：
+> 结构化查询语句（Structured Query Language），SQL 用来和数据库打交道，完成和数据库的交互。SQL 是一套标准，但是每一个数据库都有自己才有的特性。
+---
 
 
-2、名词介绍：
-    1、DB（Database）就是数据库，存储数据的仓库
+## 2、SQL 语句按功能划分
 
-    2、DBMS（Database Management System）
-        数据库管理系统
-        管理数据库的软件，MySQL、Oracle、.....
+1. 数据定义语言（DDL-Date Definition Language），针对结构的操作
+> 它用来定义我们的数据库对象，包括数据库、数据表和列。通过使用 DDL，可以创建，删除和修改数据库和表结构。代表关键字：create
 
-    3、DBS（Database System）
-        数据库系统
-        DBS = DB（存储）+ DBMS（数据库软件）+ 数据库应用 + 用户
+2. 数据查询语句（DQL-Data Query Language），针对表中数据的操作
+> 用它查询想要的记录，代表关键字：select
 
+3. 数据操作语言（DML-Data Manipulation Language），针对表中数据的操作
+> 用它操作和数据库相关的记录，比如增加、删除、修改数据表中的记录。代表关键字：insert、delete、update
 
-3、数据库提供数据库服务的软件
-    1、软件分类
-        MySQL、SQL_Server、Oracle、DB2、Mariadb、MongoDB
+4. 数据控制语言（DCL-Data Control Language）
+> 用它来定义访问权限和安全级别。代表关键字：grant、revoke
 
-    2、在生产环境中，如何选择使用哪个数据库软件
-        1、是否开源
-            MySQL、Mariadb、MongoDB
-        2、是否跨平台
-        3、公司类型
-            1、商业软件：政府部门、金融机构
-            2、开源软件：游戏网站、购物网站、论坛网站
+5. 事务控制语言（TCL-Transaction Control Language）
+> 不同数据库情况不一样，以MySQL为例，代表关键字：commit、rollback
 
+注：好的代码规范是提高效率的关键，关于 SQL 大小写的问题
+```
+1、表名、表别名、字段名、字段别名等都小写；
+2、SQL 保留字、函数名、绑定变量等都大写。
+```
+---
+    
 
-4、MySQL特点：
-    1、关系型数据库特点
-        1、数据是以行和列的形式存贮的
-        2、这一系列的行和列称为表
-        3、表中的每一行叫一条记录
-        4、表中的每一列叫一个字段
-        5、表和表中的逻辑关联叫关系
-        6、关系型数据库的核心内容是关系即二维表
+## 3、名词介绍：
 
-    2、实例：
-        1、关系型数据库存储
-            表1、学生信息表
-              姓名     年龄    班级
-              张三丰    23    AID1712
-              金花      24    AID1711
+1. DB（Database）就是数据库，存储数据的仓库，可以把它理解为多个数据表的集合。
 
-            表二、班级信息表
-              班级        班主任
-              AID1712    候大大
-              AID1711    孙大大
-        2、非关系型数据库存储（性能较高、数据冗余）
-            {姓名：“张三丰”，年龄：23，班级：“AID1712”，班主任：“侯大大”}
+2. DBMS（Database Management System），数据库管理系统或管理数据库的软件，DBMS = 多个数据库（DB） + 管理程序。
 
-    3、扩平台
-        Unix、Linux、Windows上运行Mysql服务
-
-    4、支持多种语言编程语句
-        Python、Java、PHP、。。。。。。
+3. DBS（Database System），数据库系统，DBS = DB（存储）+ DBMS（数据库软件）+ 数据库应用 + 用户
+---
 
 
-5、Mysql安装：
-    1、Ubuntu 安装MySQL 服务
-        1、安装服务端
-            sudo apt-get install mysql-server
-        2、安装客户端
-            sudo apt-get install mysql-client
+## 4、MySQL 中的 SQL 是如何执行的
 
-    2、Windows 安装MySQL 服务
-        1、下载MySQL安装包（Windows）
-            mysql-install-**5.7.msi
-        2、双击、安装
-        3、服务的启动和停止
-            net stop mysql
-            net start mysql
+1. 连接层：客户端和服务器端建立连接，客户端发送 SQL 至服务器端；
 
-    3、启动和连接Mysql 服务
-        1、服务端启动（Linux）
-            1、查看MySQL 服务状态
-                sudo /etc/init.d/mysql status
-            2、启动MySQL 服务
-                sudo /etc/init.d/mysql start
-            3、停止MySQL 服务
-                sudo /etc/init.d/mysql stop
-            4、重启MySQL 服务
-                sudo /etc/init.d/mysql restart
-        2、客户端连接
-            mysql -h主机名 -u用户名 -p密码 (本地连接可省略-h)
-        3、断开于服务器的连接
-            exit    quit    \q
+2. SQL 层：对 SQL 语句进行查询处理；
+```
+1、 查询缓存：Server 如果在查询缓存中发现了这条 SQL 语句，就会直接将结果返回给客户端；如果没有，就进入到解析器阶段。需要说明的是，因为查询缓存往往效率不高，所以在 MySQL8.0 之后就抛弃了这个功能。
 
-    4、简单配置
-        1、如何更改默认字符集
-            1、方法：通过更改Mysql的配置文件实现
-            2、步骤：
-                1、获取root权限 sudo -i
-                2、修改mysql配置文件：vi /etc/mysql/mysql.conf.d/mysqld.cnf
-                                    在[mysqld] 中加入character_set_server = utf8
-                3、重启mysql服务
-                    sudo /etc/init.d/mysql restart
-        2、取消本地监听
-            1、方法：通过更改Mysql的配置文件实现
-            2、步骤：
-                1、获取root权限 sudo -i
-                2、修改mysql配置文件：vi /etc/mysql/mysql.conf.d/mysqld.cnf
-                                    找到bind-address = 127.0.0.1 并注释掉
-                3、重启mysql服务
-                    sudo /etc/init.d/mysql restart
+2、解析器：在解析器中对 SQL 语句进行语法分析、语义分析。
 
-        3、修改MySql 的管理员密码
-            sudo mysqladmin -u root password newpassword
+3、优化器：在优化器中会确定 SQL 语句的执行路径，比如是根据全表检索，还是根据索引来检索等。
 
-    5、卸载MySQL
-        sudo apt purge mysql-*
-        sudo rm -rf /etc/mysql/ /var/lib/mysql
-        sudo apt autoremove
-        sudo apt autoreclean
+4、执行器：在执行之前需要判断该用户是否具备权限，如果具备权限就执行 SQL 查询并返回结果。在 MySQL8.0 以下的版本，如果设置了查询缓存，这时会将查询结果进行缓存。可以使用 select version(); 来查看 MySQL 的版本情况。
+```
 
-    6、SQL命令的使用规则
-        1、每条命令必须以；结尾
-        2、SQL命令不区分大小写
-        3、\c终止SQL语句的运行
+3. 存储引擎层：与数据库文件打交道，负责数据的存储和读取。常见的存储引擎：
+```
+1、InnoDB 存储引擎：它是 MySQL 5.5 版本之后默认的存储引擎，最大的特点是支持事务、行级锁定、外键约束等。
+
+2、MyISAM 存储引擎：在 MySQL 5.5 版本之前是默认的存储引擎，不支持事务，也不支持外键，最大的特点是速度快，占用资源少。
+
+3、Memory 存储引擎：使用系统内存作为存储介质，以便得到更快的响应速度。不过如果 mysqld 进程崩溃，则会导致所有的数据丢失，因此我们只有当数据是临时的情况下才使用 Memory 存储引擎。
+
+4、NDB 存储引擎：也叫做 NDB Cluster 存储引擎，主要用于 MySQL Cluster 分布式集群环境，类似于 Oracle 的 RAC 集群。
+
+5、Archive 存储引擎：它有很好的压缩机制，用于文件归档，在请求写入时会进行压缩，所以也经常用来做仓库。
+```
+
+注：由于MySQL的存储引擎各有特点，常用的有：MyISAM的使用场景为读写分离的读库， 而InnoDB为写库
+
+---
 
 
-6、SQL 的分类
-    1、针对表中数据的操作
-        数据查询语句（DQL-Data Query Language）
-            代表关键字：select
-        数据操作语言（DML-Data Manipulation Language）
-            代表关键字：insert、delete、update
+## 5、如何在 MySQL 中对一条 SQL 语句的执行时间进行分析
 
-    2、针对结构的操作
-        数据定义语言（DDL-Date Definition Language）
-            代表关键字：create、delete、update
+1. 需要看下 profiling 是否开启，开启它可以让 MySQL 收集在 SQL 执行时所使用的资源情况，命令如下：
+```
+mysql> select @@profiling;
+```
 
-    3、事务控制语言（TCL-Transaction Control Language）
-        代表关键字：commit、rollback
+2. profiling=0 代表关闭，我们需要把 profiling 打开，即设置为 1
+```
+mysql> set profiling=1;
+```
 
-    4、数据控制语言（DCL-Data Control Language）
-        代表关键字：grant、revoke
+3. 执行一个 SQL 查询。
+
+4. 查看当前会话所产生的所有 profiles:
+```
+mysql> show profiles;
+```
+
+5. 如果想要获取上一次查询的执行时间，可以使用：
+```
+mysql> show profile;
+```
+
+6. 查询指定的 Query ID
+```
+mysql> show profile for query 2;
+```
+---
+
+
+
 
 
 数据类型：默认有符号
@@ -958,3 +924,65 @@ Python数据库编程
 
         pymysql.connect --->>db ---> db.cursor() ----> 执行
 
+
+5、Mysql安装：
+    1、Ubuntu 安装MySQL 服务
+        1、安装服务端
+            sudo apt-get install mysql-server
+        2、安装客户端
+            sudo apt-get install mysql-client
+
+    2、Windows 安装MySQL 服务
+        1、下载MySQL安装包（Windows）
+            mysql-install-**5.7.msi
+        2、双击、安装
+        3、服务的启动和停止
+            net stop mysql
+            net start mysql
+
+    3、启动和连接Mysql 服务
+        1、服务端启动（Linux）
+            1、查看MySQL 服务状态
+                sudo /etc/init.d/mysql status
+            2、启动MySQL 服务
+                sudo /etc/init.d/mysql start
+            3、停止MySQL 服务
+                sudo /etc/init.d/mysql stop
+            4、重启MySQL 服务
+                sudo /etc/init.d/mysql restart
+        2、客户端连接
+            mysql -h主机名 -u用户名 -p密码 (本地连接可省略-h)
+        3、断开于服务器的连接
+            exit    quit    \q
+
+    4、简单配置
+        1、如何更改默认字符集
+            1、方法：通过更改Mysql的配置文件实现
+            2、步骤：
+                1、获取root权限 sudo -i
+                2、修改mysql配置文件：vi /etc/mysql/mysql.conf.d/mysqld.cnf
+                                    在[mysqld] 中加入character_set_server = utf8
+                3、重启mysql服务
+                    sudo /etc/init.d/mysql restart
+        2、取消本地监听
+            1、方法：通过更改Mysql的配置文件实现
+            2、步骤：
+                1、获取root权限 sudo -i
+                2、修改mysql配置文件：vi /etc/mysql/mysql.conf.d/mysqld.cnf
+                                    找到bind-address = 127.0.0.1 并注释掉
+                3、重启mysql服务
+                    sudo /etc/init.d/mysql restart
+
+        3、修改MySql 的管理员密码
+            sudo mysqladmin -u root password newpassword
+
+    5、卸载MySQL
+        sudo apt purge mysql-*
+        sudo rm -rf /etc/mysql/ /var/lib/mysql
+        sudo apt autoremove
+        sudo apt autoreclean
+
+    6、SQL命令的使用规则
+        1、每条命令必须以；结尾
+        2、SQL命令不区分大小写
+        3、\c终止SQL语句的运行
