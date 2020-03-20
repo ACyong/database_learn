@@ -6,19 +6,19 @@
 ## 1、SQL 语句按功能划分
 
 1. 数据定义语言（DDL-Date Definition Language），针对结构的操作
-> 它用来定义我们的数据库对象，包括数据库、数据表和列。通过使用 DDL，可以创建，删除和修改数据库和表结构。代表关键字：create
+> 它用来定义我们的数据库对象，包括数据库、数据表和列。通过使用 DDL，可以创建，删除和修改数据库和表结构。代表关键字：CREATE、DROP 和 ALTER
 
 2. 数据查询语句（DQL-Data Query Language），针对表中数据的操作
-> 用它查询想要的记录，代表关键字：select
+> 用它查询想要的记录，代表关键字：SELECT
 
 3. 数据操作语言（DML-Data Manipulation Language），针对表中数据的操作
-> 用它操作和数据库相关的记录，比如增加、删除、修改数据表中的记录。代表关键字：insert、delete、update
+> 用它操作和数据库相关的记录，比如增加、删除、修改数据表中的记录。代表关键字：INSERT、DELETE、UPDATE
 
 4. 数据控制语言（DCL-Data Control Language）
-> 用它来定义访问权限和安全级别。代表关键字：grant、revoke
+> 用它来定义访问权限和安全级别。代表关键字：GRANT、REVOKE
 
 5. 事务控制语言（TCL-Transaction Control Language）
-> 不同数据库情况不一样，以MySQL为例，代表关键字：commit、rollback
+> 不同数据库情况不一样，以MySQL为例，代表关键字：COMMIT、ROLLBACK
 
 > 注：好的代码规范是提高效率的关键，关于 SQL 大小写的问题
 ```
