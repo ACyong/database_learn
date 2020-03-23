@@ -75,27 +75,27 @@
 
 1. 需要看下 profiling 是否开启，开启它可以让 MySQL 收集在 SQL 执行时所使用的资源情况，命令如下：
 ```
-mysql> select @@profiling;
+mysql> SELECT @@profiling;
 ```
 
 2. profiling=0 代表关闭，我们需要把 profiling 打开，即设置为 1
 ```
-mysql> set profiling=1;
+mysql> SET profiling=1;
 ```
 
 3. 执行一个 SQL 查询。
 
 4. 查看当前会话所产生的所有 profiles:
 ```
-mysql> show profiles;
+mysql> SHOW profiles;
 ```
 
 5. 如果想要获取上一次查询的执行时间，可以使用：
 ```
-mysql> show profile;
+mysql> SHOW profile;
 ```
 
 6. 查询指定的 Query ID
 ```
-mysql> show profile for query 2;
+mysql> SHOW profile FOR QUERY 2;
 ```

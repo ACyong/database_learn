@@ -15,26 +15,6 @@
         7、删除库：
             drop database 库名;
 
-    2、库的命名规则：
-        1、可以使用数字、字母、_，但是不能是纯数字
-        2、库名区分字母大小写
-        3、库名具有唯一性
-        4、不能使用特殊字符和mysql关键字
-
-    练习2：
-        1、创建库AID，指定字符集utf-8
-            create database AID default charset = utf8;
-        2、进入到库AID中
-            use AID;
-        3、查看当前所在库
-            select database();
-        4、查看库中已有的表
-            show tables;
-        5、查看AID的字符集
-            show create database AID;
-        6、删除库AID
-            drop database AID;
-
 
 表的管理
     1、表的基本操作
