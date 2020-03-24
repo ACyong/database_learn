@@ -59,7 +59,7 @@ DROP TABLE 表名;
 ---
 
 
-## 3、库的命名规则：
+## 3、库\表的命名规则：
 ```
 1、可以使用数字、字母、_，但是不能是纯数字
 2、库名区分字母大小写
@@ -69,7 +69,7 @@ DROP TABLE 表名;
 ---
 
 
-## 练习1：
+## 练习：
 
 1. 创建库stu，指定字符集utf-8
 ```
@@ -86,39 +86,18 @@ USE stu;
 SELECT DATABASE();
 ```
 
-4. 查看库中已有的表
-```
-SHOW TABLES;
-```
-
-5. 查看stu的字符集
+4. 查看stu的字符集
 ```
 SHOW CREATE DATABASE stu;
 ```
 
-6. 删除库stu
-```
-DROP DATABASE stu;
-```
----
-
-
-## 练习2：
-
-1. 创建数据库stu ，指定默认编码为utf8
-```
-CREATE DATABASE stu DEFAULT CHARSET = UTF8;
-```
-
-2. 创建表stuinfo, utf8, 字段要求：
+5. 创建表stuinfo, utf8, 字段要求：
 ```
 学号：id 要求显示宽度为3，位数不够用0填充，主键自增长
 姓名：name：name 变长， 宽度20
 年龄：age：微小整型， 不能输入负数
 身高：height 浮点型， 小数位2位
 工资：salary 浮点型，小数位2位， 最大值99999.99
-
-USE stu;
 
 CREATE TABLE stuinfo(
     id INT(3) UNSIGNED ZEROFILL PRIMARY KEY AUTO_INCREMENT,
@@ -129,7 +108,17 @@ CREATE TABLE stuinfo(
 )DEFAULT CHARSET = "UTF8";
 ```
 
-3. 插入一条记录
+6. 查看库中已有的表
 ```
-INSERT INTO stuinfo(user_name, age, height, salary) VALUES('张三', 23, 170.12, 30000.99);
+SHOW TABLES;
+```
+
+7. 删除表
+```
+DROP TABLE stuinfo;
+```
+
+8. 删除库stu
+```
+DROP DATABASE stu;
 ```
