@@ -1,85 +1,36 @@
 表的管理
-    1、表的基本操作
-        1、创建表
-            create table 表名(
-                字段名 数据类型 [完整性约束条件],
-                字段名 数据类型 [完整性约束条件],
-                .....
-            )[default charset = utf8];
-        2、查看创建表的语句（字符集）
-            show create table 表名;
-        3、查看表结构
-            desc 表名;
-        4、修改表名：
-            alter table table_name rename table_new_name;
-        5、删除表：
-            drop table 表名;
-        注：所有的数据都是以文件的形式存储在数据库目录下的数据库目录：/var/lib/mysql
+    1、创建库 python
+        create database python default charset = utf8;
 
-    2、表记录的管理：
-        1、在表中插入记录
-            insert into 表名[字段名] values(值1, 值2),.......;
-        2、查看表记录
-            1、select * from 表名;
-            2、select 字段名1, 字段名2, .... from 表名;
+    2、在python库中创建表py_mysql,字段有三个:id name biaoname 数据类型自己定义
+        use python;
+        create table py_mysql(
+            id int primary key auto_increment,
+            name char(6) not null,
+            pwd varchar(16) not null
+        )default charset = utf8;
 
-      练习3：
-          1、创建库 python
-              create database python default charset = utf8;
+    3、查看创建表的语句
+        show create table py_mysql;
 
-          2、在python库中创建表py_mysql,字段有三个:id name biaoname 数据类型自己定义
-              use python;
-              create table py_mysql(
-                  id int primary key auto_increment,
-                  name char(6) not null,
-                  pwd varchar(16) not null
-              )default charset = utf8;
+    4、查看py_mysql的表结构
+        desc py_mysql;
 
-          3、查看创建表的语句
-              show create table py_mysql;
+    5、随便插入两条记录
+        insert into py_mysql(name, pwd) values("李四", "123456");
+        insert into py_mysql(name, pwd) values("王五", "789056");
 
-          4、查看py_mysql的表结构
-              desc py_mysql;
+    6、修改表名
+        alter table py_mysql rename pysql;
 
-          5、随便插入两条记录
-              insert into py_mysql(name, pwd) values("李四", "123456");
-              insert into py_mysql(name, pwd) values("王五", "789056");
+    7、删除表pysql
+        drop table pysql;
 
-          6、修改表名
-              alter table py_mysql rename pysql;
-
-          7、删除表pysql
-              drop table pysql;
-
-          8、删除数据库python
-              drop database python;
+    8、删除数据库python
+        drop database python;
 
 
 表字段管理：
-    语法：alter table 表名 执行动作;
-        1、添加字段(add)
-            1、添加字段到末尾：alter table 表名 add 字段名 数据类型 [完整性约束条件]；
-            2、添加字段到开始：alter table 表名 add 字段名 数据类型 [完整性约束条件] first；
-            3、添加字段到指定位置：alter table 表名 add 字段名 数据类型 [完整性约束条件] after 字段名；
-        2、删除字段(drop)
-            alter table 表名 drop 字段名;
-        3、修改数据类型(modify)
-            alter table 表名 modify 字段名 新的数据类型 [完整性约束条件];
-        4、修改字段名(change)
-            alter table 表名 change 旧名 新名 数据类型 [完整性约束条件];
-
-    where条件子句（配合查、改、删操作）
-        语法格式
-            select * from 表名 where 条件;
-
-    表记录管理（续）
-        1、更新表记录
-            update 表名 set 字段名 = 值, 字段名 = 值, ... where 条件;
-            注：不要忘记加where条件，否则表中所有记录该字段的值都会更改
-        2、删除表记录
-            delete from 表名 where 条件；
-            注：不加where子句，将会把表中所有记录全部删除
-
     练习4：use stu;
         1、为stuinfo 添加一个字段addr，数据类型varchar
             alter table stuinfo add addr varchar(64);
@@ -764,3 +715,14 @@ Python数据库编程
         1、每条命令必须以；结尾
         2、SQL命令不区分大小写
         3、\c终止SQL语句的运行
+
+
+是否使用外键确实会有一些争议。我来解释下关于外键的使用：
+首先，外键本身是为了实现强一致性，所以如果需要正确性>性能的话，还是建议使用外键，它可以让我们在数据库的层面保证数据的完整性和一致性。
+当然不用外键，你也可以在业务层进行实现。不过，这样做也同样存在一定的风险，因为这样，就会让业务逻辑会与数据具备一定的耦合性。也就是业务逻辑和数据必须同时修改。而且在工作中，业务层可能会经常发生变化。
+
+当然，很多互联网的公司，尤其是超大型的数据应用场景，大量的插入，更新和删除在外键的约束下会降低性能，同时数据库在水平拆分和分库的情况下，数据库端也做不到执行外键约束。另外，在高并发的情况下，外键的存在也会造成额外的开销。因为每次更新数据，都需要检查另外一张表的数据，也容易造成死锁。
+所以在这种情况下，尤其是大型项目中后期，可以采用业务层来实现，取消外键提高效率。
+不过在SQL学习之初，包括在系统最初设计的时候，还是建议你采用规范的数据库设计，也就是采用外键来对数据表进行约束。因为这样可以建立一个强一致性，可靠性高的数据库结构，也不需要在业务层来实现过多的检查。
+当然在项目后期，业务量增大的情况下，你需要更多考虑到数据库性能问题，可以取消外键的约束，转移到业务层来实现。而且在大型互联网项目中，考虑到分库分表的情况，也会降低外键的使用。
+不过在SQL学习，以及项目早期，还是建议你使用外键。在项目后期，你可以分析有哪些外键造成了过多的性能消耗。一般遵循2/8原则，会有20%的外键造成80%的资源效率，你可以只把这20%的外键进行开放，采用业务层逻辑来进行实现，当然你需要保证业务层的实现没有错误。不同阶段，考虑的问题不同。当用户和业务量增大的时候，对于大型互联网应用，也会通过减少外键的使用，来减低死锁发生的概率，提高并发处理能力。
