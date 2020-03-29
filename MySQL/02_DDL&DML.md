@@ -85,6 +85,7 @@ DROP TABLE 表名;
 
 ---
 
+
 ## 3、针对表字段
 > 语法：ALTER TABLE 表名 执行动作;
 
@@ -112,6 +113,7 @@ ALTER TABLE 表名 MODIFY 字段名 新的数据类型 [完整性约束条件];
 ALTER TABLE 表名 CHANGE 旧名 新名 数据类型 [完整性约束条件];
 ```
 ---
+
 
 ## 4、表记录的管理：
 
@@ -143,60 +145,4 @@ DELETE FROM 表名 WHERE 条件；
 2、库名区分字母大小写
 3、库名具有唯一性
 4、不能使用特殊字符和mysql关键字
-```
----
-
-
-## 练习：
-
-1. 创建库stu，指定字符集utf-8
-```
-CREATE DATABASE stu DEFAULT CHARSET = UTF8;
-```
-
-2. 进入到库stu中
-```
-USE stu;
-```
-
-3. 查看当前所在库
-```
-SELECT DATABASE();
-```
-
-4. 查看stu的字符集
-```
-SHOW CREATE DATABASE stu;
-```
-
-5. 创建表stuinfo, utf8, 字段要求：
-```
-学号：id 要求显示宽度为3，位数不够用0填充，主键自增长
-姓名：name：name 变长， 宽度20
-年龄：age：微小整型， 不能输入负数
-身高：height 浮点型， 小数位2位
-工资：salary 浮点型，小数位2位， 最大值99999.99
-
-CREATE TABLE stuinfo(
-    id INT(3) UNSIGNED ZEROFILL PRIMARY KEY AUTO_INCREMENT,
-    user_name VARCHAR(20),
-    age TINYINT UNSIGNED,
-    height FLOAT(5, 2),
-    salary FLOAT(7, 2)
-)DEFAULT CHARSET = "UTF8";
-```
-
-6. 查看库中已有的表
-```
-SHOW TABLES;
-```
-
-7. 删除表
-```
-DROP TABLE stuinfo;
-```
-
-8. 删除库stu
-```
-DROP DATABASE stu;
 ```
