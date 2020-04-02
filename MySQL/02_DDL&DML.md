@@ -1,5 +1,5 @@
 # DDL&DML
-> DDL&DML 是 DBMS 的核心组件，也是 SQL 的重要组成部分，DDL 的正确性和稳定性是整个 SQL 运行的重要基础
+> DDL&DML 是 DBMS 的核心组件，也是 SQL 的重要组成部分，DDL&DML 的正确性和稳定性是整个 SQL 运行的重要基础
 ---
 
 
