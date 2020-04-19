@@ -42,7 +42,7 @@ SHOW TABLES;
 DROP DATABASE 库名;
 ```
 
-注：COLLATE utf8_general_ci 代表的是数据库校对规则，utf8_bin将字符串中的每一个字符用二进制数据存储，区分大小写。utf8_genera_ci不区分大小写，ci为case insensitive的缩写，即大小写不敏感。utf8_general_cs区分大小写，cs为case sensitive的缩写，即大小写敏感。
+注意：COLLATE utf8_general_ci 代表的是数据库校对规则，utf8_bin将字符串中的每一个字符用二进制数据存储，区分大小写。utf8_genera_ci不区分大小写，ci为case insensitive的缩写，即大小写不敏感。utf8_general_cs区分大小写，cs为case sensitive的缩写，即大小写敏感。
 
 ---
 
@@ -81,7 +81,7 @@ ALTER TABLE table_name RENAME table_new_name;
 DROP TABLE 表名;
 ```
 
-注：所有的数据都是以文件的形式存储在数据库目录下的数据库目录：/var/lib/mysql
+注意：所有的数据都是以文件的形式存储在数据库目录下的数据库目录：/var/lib/mysql
 
 ---
 
@@ -134,7 +134,7 @@ WHERE 条件子句（配合查、改、删操作）
 DELETE FROM 表名 WHERE 条件；
 ```
 
-注：更新或删除如果不加where子句，将会把表中所有记录全部更改或删除
+注意：更新或删除如果不加where子句，将会把表中所有记录全部更改或删除
 
 ---
 
