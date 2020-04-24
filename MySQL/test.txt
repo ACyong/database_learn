@@ -308,39 +308,6 @@ ER模型&ER图
                   select * from CCB;
 
 
-Python数据库编程
-    1、python数据库接口(Python DB-API)
-        1、定义：为开发人员提供的数据库应用编程接口
-        2、支持的数据库服务软件
-            MySQL、Oracle、SQL_Server、Sybase、Mogodb ...
-        3、Python提供的操作MySQL的模块
-            模块名：pymysql
-        4、pymysql的使用流程
-            1、建立数据库连接
-            2、创建游标对象
-            3、使用游标对象的方法和SQL语句操控MySQL数据库
-            4、提交commit
-            5、关闭游标
-            6、关闭数据库连接
-        5、建立数据库连接
-            1、语法格式
-                对象名(db) = pymysql.connect("主机地址","用户名","密码","库名",charset="utf8")
-            2、connect对象(db)的方法
-                1、cursor() 创建一个游标对象db.cursor()
-                2、commit() 提交到数据库 db.commit()
-                3、rollback() 回滚 db.rollback()
-                4、close() 关闭与数据库的连接 db.close()
-            3、cursor游标对象(cur)的方法
-                1、execute() 执行sql命令
-                2、fetchone() 取得结果集的第一条记录
-                3、fetchmany(数字) 取得结果集的 几条 记录
-                4、fetchall() 取得结果集的所有行
-                5、close() 关闭游标对象
-                属性：rowcount : 返回命令执行所影响的条数
-
-        pymysql.connect --->>db ---> db.cursor() ----> 执行
-
-
 5、Mysql安装：
     1、Ubuntu 安装MySQL 服务
         1、安装服务端
