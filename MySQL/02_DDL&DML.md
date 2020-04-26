@@ -42,8 +42,10 @@ SHOW TABLES;
 DROP DATABASE 库名;
 ```
 
-注意：COLLATE utf8_general_ci 代表的是数据库校对规则，utf8_bin将字符串中的每一个字符用二进制数据存储，区分大小写。utf8_genera_ci不区分大小写，ci为case insensitive的缩写，即大小写不敏感。utf8_general_cs区分大小写，cs为case sensitive的缩写，即大小写敏感。
-
+注意：
+```
+COLLATE utf8_general_ci 代表的是数据库校对规则，utf8_bin将字符串中的每一个字符用二进制数据存储，区分大小写。utf8_genera_ci不区分大小写，ci为case insensitive的缩写，即大小写不敏感。utf8_general_cs区分大小写，cs为case sensitive的缩写，即大小写敏感。
+```
 ---
 
 
