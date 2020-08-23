@@ -80,24 +80,24 @@ m - > 从第几条记录开始显示，n 表示显示几条
 注意：
 ```
 ORDER BY 后面可以有一个或多个列名，如果是多个列名进行排序，会按照后面第一个列先进行排序，当第一列的值相同的时候，再按照第二列进行排序，以此类推。
+
 ORDER BY 可以使用非选择列进行排序，所以即使在 SELECT 后面没有这个列名，同样可以放到 ORDER BY 后面进行排序
 ```
 
 ```
 关于ORDER BY字段是否增加索引：
 
-在MySQL中，支持两种排序方式：FileSort和Index排序。Index排序的效率更高，
+在MySQL中，支持两种排序方式：FileSort和Index排序。Index排序的效率更高
 Index排序：索引可以保证数据的有序性，因此不需要再进行排序。
 FileSort排序：一般在内存中进行排序，占用CPU较多。如果待排结果较大，会产生临时文件I/O到磁盘进行排序，效率较低。
 所以使用ORDER BY子句时，应该尽量使用Index排序，避免使用FileSort排序。
-当然具体优化器是否采用索引进行排序，你可以使用explain来进行执行计划的查看。
+具体优化器是否采用索引进行排序，可以使用explain来进行执行计划的查看。
 
 优化建议：
-1、SQL中，可以在WHERE子句和ORDER BY子句中使用索引，目的是在WHERE子句中避免全表扫描，ORDER BY子句避免使用FileSort排序。
-当然，某些情况下全表扫描，或者FileSort排序不一定比索引慢。但总的来说，我们还是要避免，以提高查询效率。
-一般情况下，优化器会帮我们进行更好的选择，当然我们也需要建立合理的索引。
-2、尽量Using Index完成ORDER BY排序。
-如果WHERE和ORDER BY相同列就使用单索引列；如果不同使用联合索引。
+1、SQL中，可以在WHERE子句和ORDER BY子句中使用索引，目的是在WHERE子句中避免全表扫描，ORDER BY子句避免使用FileSort排序。某些情况下全表扫描，或者FileSort排序不一定比索引慢。但总的来说，我们还是要避免，以提高查询效率。一般情况下，优化器会帮我们进行更好的选择，当然我们也需要建立合理的索引。
+
+2、尽量Using Index完成ORDER BY排序。如果WHERE和ORDER BY相同列就使用单索引列；如果不同使用联合索引。
+
 3、无法Using Index时，对FileSort方式进行调优。
 ```
 
@@ -119,6 +119,19 @@ InnoDB 表
 ORDER BY 是对分的组排序还是对分组中的记录排序:
 
 ORDER BY 就是对记录进行排序。如果你在 ORDER BY 前面用到了 GROUP BY，实际上这是一种分组的聚合方式，已经把一组的数据聚合成为了一条记录，再进行排序的时候，相当于对分的组进行了排序
+```
+
+```
+在排序时, null 值被认为是最大的。 在降序排序时(descending)null值排在了最前面。解决这类问题有两种思路。
+
+最简单的一种是用 coalesce 消除 null的影响，可以在输出时将 null 转换为 0：
+SELECT name, coalesce(points, 0) FROM users ORDER BY 2 DESC; 
+
+或输出时保留 null, 但排序时转换为 0: 
+SELECT name,points FROM users ORDER BY coalesce(points, 0) DESC; 
+
+还有一种方式需要数据库的支持（Oracle），指定排序时将 null 值放在最前面还是最后面: 
+SELECT name,coalesce(points, 0) FROM users ORDER BY 2 DESC nulls last;
 ```
 ---
 

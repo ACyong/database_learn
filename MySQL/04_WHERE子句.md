@@ -99,11 +99,23 @@ DELETE FROM 表名 [WHERE 字段名 运算符 数字\字符];
 
 
 注意：
+
+Null不支持大小/相等判断，不管表中有多少条记录，返回的记录都是0行，将某个值与 null 进行比较的正确方法是使用 is 关键字, 以及 is not 操作符；尽量不要出现Null 可以使用默认值来代替。
+
 ```
-1、Null不支持大小/相等判断，不管表中有多少条记录，返回的记录都是0行，将某个值与 null 进行比较的正确方法是使用 is 关键字, 以及 is not 操作符；
+SELECT * FROM users WHERE id NOT IN (1, 2, null);
 
-2、select * from users where id not in (1, 2, null) 这个SQL语句会被转换为: select * from users where id != 1 and id != 2 and id != null，根据1得知 这个SQL的筛选逻辑为false，返回结果是空的。select * from users where id in (1, 2, null) 这条SQL被转换为: select * from users 
-where id = 1 or id = 2 or id = null，因为 where 子句中是一串的 or 条件，所以其中某个的结果为 null 也是无关紧要的。非真(non-true)值并不影响子句中其他部分的计算结果,相当于被忽略了。
+这个SQL语句会被转换为: 
 
-3、在排序时, null 值被认为是最大的。 在降序排序时(descending)null值排在了最前面。解决这类问题有两种思路。最简单的一种是用 coalesce 消除 null的影响，可以在输出时将 null 转换为 0：select name, coalesce(points, 0) from users order by 2 desc; 或输出时保留 null, 但排序时转换为 0: select name,points from users order by coalesce(points, 0) desc; 还有一种方式需要数据库的支持（Oracle），指定排序时将 null 值放在最前面还是最后面: select name,coalesce(points, 0) from users order by 2 desc nulls last;
+SELECT * FROM users WHERE id != 1 AND id != 2 AND id != null;
+
+根据 1 得知 这个SQL的筛选逻辑为false，返回结果是空的。
+
+SELECT * FROM users WHERE id IN (1, 2, null);
+
+这条SQL被转换为:
+ 
+SELECT * FROM users WHERE id = 1 OR id = 2 OR id = null;
+
+因为 where 子句中是一串的 or 条件，所以其中某个的结果为 null 也是无关紧要的。非真(non-true)值并不影响子句中其他部分的计算结果,相当于被忽略了。
 ```
