@@ -241,59 +241,6 @@ ER模型&ER图
             学生选课系统
 
 
-事务&事务回滚
-    1、事务定义
-        一件事从开始发生到结束的整个过程
-
-    2、属性
-        1、原子性：一个事务是不可分割的工作单位,事务中的各个操作要么都做,要么就都不做
-        2、一致性：事务必须从一个一致性状态到另一个一致性状态
-        3、隔离性：一个事务的执行不能被其他并发事务干扰
-        4、持久性：一个事务一旦提交,它对数据库的改变是永久性的
-
-    3、事务及事务回滚的应用
-        1、mysql中默认sql语句会自动commit到数据库
-            show variables like "autocommit";
-        2、事务应用
-            1、开启事务
-                mysql> start transaction;
-                ## 此时autocommit被禁用,SQL命令不会对数据库中数据做修改
-            2、终止事务
-                mysql> commit; | rollback;
-        3、注意
-            事务&事务回滚只针对对表记录的操作:增加、删除、修改,对创建库、创建表是无效的
-        4、案例
-            1、背景
-                你 ：   建行卡
-                你朋友：工商卡
-                你在建行的自动提款机给你朋友(工商银行卡)转账
-            2、过程
-                表1、建行：CCB
-                表2、工行：ICBC
-                    create table CCB(
-                        name varchar(20),
-                        money int
-                    )default charset = utf8;
-
-                    insert into CCB values("转钱", 100000);
-
-                    create table ICBC(
-                        name varchar(20),
-                        money int
-                    )default charset = utf8;
-
-                    insert into ICBC values("借钱", 2000);
-
-              ###开始转账
-                  start transaction;
-                  update CCB set money=95000 where name="你";
-                  update ICBC set ... 断电了...;
-                  rollback
-
-              ###验证
-                  select * from CCB;
-
-
 5、Mysql安装：
     1、Ubuntu 安装MySQL 服务
         1、安装服务端
