@@ -65,4 +65,118 @@ Connection 就是对数据库的当前连接进行管理，可以通过它来进
 
 
 ## 3、对数据表进行增删改查
+```
+import json
+import traceback
+import mysql.connector
 
+# 读取数据库链接配置文件, 建议把数据库链接信息写到配置文件里，防止密码泄露。
+with open('mysql.json', encoding='utf-8') as con_json:
+    con_dict = json.load(con_json)
+
+# 打开数据库链接
+db = mysql.connector.connect(
+    host=con_dict['host'],
+    user=con_dict['user'],
+    passwd=con_dict['passwd'],
+    database=con_dict['database'],
+    auth_plugin=con_dict['auth_plugin'],  # 密码验证方式
+)
+
+# 获取操作游标
+cursor = db.cursor()
+try:
+    sql = 'SELECT statement'
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    print(cursor.rowcount, '查询成功。')
+    for each in data:
+        print(each)
+except Exception as e:
+    # 打印异常信息
+    traceback.print_exc()
+finally:
+    cursor.close()
+    db.close()
+```
+
+使用 cursor.execute 来执行相应的 SQL 语句, 执行 insert, delete, update, 的时候使用 db.commit() 和 db.rollback()，对事务进行提交以及回滚, 执行 select 的时候使用cursor.fetchone(), cursor.fetchall(), cursor.fetchmany(n) 取数据
+
+
+## 4. 使用Python ORM框架来操作MySQL(SQLAlchemy)
+```
+# 获取基类, 文件路径: models/base.py
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+```
+
+```
+# 获取 session, 文件路径: libs/mysql/client.py
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+from config.config import URI, POOL_SIZE, MAX_OVER, \
+    POOL_RECYCLE, POOL_TIMEOUT
+
+engine = create_engine(
+    URI,
+    pool_size=POOL_SIZE,
+    max_overflow=MAX_OVER,
+    pool_recycle=POOL_RECYCLE,
+    pool_timeout=POOL_TIMEOUT)
+
+
+def get_session():
+    return scoped_session(sessionmaker(bind=engine))()
+```
+
+```
+# 定义User对象文件路径:models/user.py
+from datetime import datetime
+
+from libs.mysql.client import get_session
+from models.base import Base
+
+
+class User(Base):
+    # 表的名字:
+    __tablename__ = "user"
+
+    # 表的结构:
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer)
+    name = Column(String(64))
+    create_time = Column(DateTime, default=datetime.now)
+
+    @classmethod
+    def create(cls, user_id, name):
+        # 创建user对象:
+        user = cls(user_id=user_id, name=name)
+        # 获取session 对象
+        session = get_session()
+        # 添加到session
+        session.add(user)
+        # 提交即保存到数据库, 自动关闭session, 没有commit 需要手动关闭session: session.close()
+        session.commit()
+```
+
+在 SQLAlchemy 中，采用 Column 对字段进行定义，常用的数据类型如下：
+| 类型     | 解释    |
+| ------- | ------- |
+| Integer | 整数类型 |
+| Float   | 浮点类型 |
+| Decimal | 定点类型 |
+| BOOlean | 布尔类型 |
+| Date    | datetime.date 日期类型 |
+| Time    | datetime.time 时间类型 |
+| String  | 字符类型, 使用时需要制定长度, 区别于Text类型 |
+| Text    | 文本类型 |
+
+除了指定 Column 的数据类型以外，还可以指定 Column 的参数，这些参数可以帮我们对对象创建列约束：
+| 约束     | 解释    |
+| ------- | ------- |
+| default | 默认值   |
+| primary_key | 是否为主键 |
+| unique  | 是否唯一 |
+| autoincrement | 是否自动增长 |
