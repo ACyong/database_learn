@@ -25,6 +25,17 @@
 1、表名、表别名、字段名、字段别名等都小写；
 2、SQL 保留字、函数名、绑定变量等都大写。
 ```
+
+注释:
+```
+# show databases; 单行注释 
+-- show databases; 单行注释 
+
+/*
+多行注释
+show databases;
+*/
+```
 ---
 
 
@@ -35,6 +46,14 @@
 2. DBMS（Database Management System），数据库管理系统或管理数据库的软件，DBMS = 多个数据库（DB） + 管理程序。
 
 3. DBS（Database System），数据库系统，DBS = DB（存储）+ DBMS（数据库软件）+ 数据库应用 + 用户
+
+4. crud 指的是:
+```
+C: create 增加
+R: Retrieve 获取/查询
+U: update更新
+D: delete删除
+```
 ---
 
 

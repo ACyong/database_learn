@@ -42,6 +42,11 @@ SHOW TABLES;
 DROP DATABASE 库名;
 ```
 
+8. 修改数据库的字符集
+```
+ALTER DATABASE 库名 CHARACTER SET 字符集名;
+```
+
 注意：
 ```
 COLLATE utf8_general_ci 代表的是数据库校对规则，utf8_bin将字符串中的每一个字符用二进制数据存储，区分大小写。utf8_genera_ci不区分大小写，ci为case insensitive的缩写，即大小写不敏感。utf8_general_cs区分大小写，cs为case sensitive的缩写，即大小写敏感。
@@ -77,10 +82,21 @@ DESC 表名;
 ```
 ALTER TABLE table_name RENAME table_new_name;
 ```
+```
+RENAME TABLE table_name TO table_new_name;
+```
 
 5. 删除表：
 ```
 DROP TABLE 表名;
+```
+```
+DROP TABLE IF EXISTS 表名;
+```
+
+6. 快速创建一个表结构相同的表(复制表结构)
+```
+CREATE TABLE 新表名 LIKE 旧表名;
 ```
 
 注意：所有的数据都是以文件的形式存储在数据库目录下的数据库目录：/var/lib/mysql
@@ -123,6 +139,14 @@ ALTER TABLE 表名 CHANGE 旧名 新名 数据类型 [完整性约束条件];
 ```
 INSERT INTO 表名[字段名] VALUES(值1, 值2),.......;
 ```
+注意：
+```
+1) 值与字段必须要对应，个数相同&数据类型相同
+2）值的数据大小，必须在字段指定的长度范围内
+3）varchar char date类型的值必须使用单引号包裹。
+4）如果要插入空值，可以忽略不写，或者插入null
+5) 如果插入指定字段的值，必须要上写列名
+```
 
 2. 更新表记录
 ```
@@ -135,9 +159,16 @@ WHERE 条件子句（配合查、改、删操作）
 ```
 DELETE FROM 表名 WHERE 条件；
 ```
+```
+TRUNCATE TABLE 表名
+```
 
-注意：更新或删除如果不加where子句，将会把表中所有记录全部更改或删除
-
+注意：
+```
+1. 更新或删除如果不加where子句，将会把表中所有记录全部更改或删除
+2. delete from 表名; 不推荐. 有多少条记录 就执行多少次删除操作. 效率低
+3. truncate table 表名: 推荐. 先删除整张表, 然后再重新创建一张一模一样的表. 效率高当一个表中条数非常多，又要做删除动作的时候，如果用delete会很慢，那可以使用 truncate
+```
 ---
 
 
