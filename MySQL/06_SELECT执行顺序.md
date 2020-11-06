@@ -56,8 +56,7 @@ LIMIT 2 #顺序8
 用法：
 ```
 1、limit n -->显示几条记录
-2、limit m, n 或 LIMIT n OFFSET m
-m - > 从第几条记录开始显示，n 表示显示几条
+2、limit m, n 或 LIMIT n OFFSET m (m 表示从第几条记录开始显示，n 表示显示几条)
 ```
 
 注意：
@@ -153,5 +152,5 @@ SELECT name,coalesce(points, 0) FROM users ORDER BY 2 DESC nulls last;
 注意：
 ```
 1、having语句通常与group by语句联合使用，用来过滤由group by语句返回的记录集，作为筛选分组的条件。
-2、having语句的存在弥补了where关键字不能与聚合函数联合使用的不足，where操作的是表中实际存在的字段，having操作的是聚合函数生成的显示列，WHERE子句用于对查询结果的分组前，通过WHERE来过滤。而HAVING子句用于筛选满足条件的组，用于在分组之后进行过滤
+2、having语句的存在弥补了where关键字后面不能与聚合函数联合使用的不足，where操作的是表中实际存在的字段，having操作的是聚合函数生成的显示列，WHERE子句用于对查询结果的分组前，通过WHERE来过滤。而HAVING子句用于筛选满足条件的组，用于在分组之后进行过滤
 ```
