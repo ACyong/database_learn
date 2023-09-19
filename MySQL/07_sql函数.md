@@ -60,9 +60,10 @@ SELECT SUBSTRING('fabcd', 1,3)，运行结果为 fab。
 
 | 函数名   | 定义    |
 | ------- | -------|
+| NOW()      | 当前日期 + 时间 |
 | CURRENT_DATE()   | 系统当前日期 | 
 | CURRENT_TIME()   | 系统当前时间，没有日期 | 
-| CURRENT_TIMESTAMP()   | 系统当前时间，包括具体的日期 + 时间 | 
+| CURRENT_TIMESTAMP()   | 系统当前时间，包括具体的日期 + 时间, 跟 NOW 没有区别 | 
 | EXTRACT()   | 抽取具体的年月日 | 
 | DATE()   | 返回时间日期部分 | 
 | YEAR()   | 返回时间年部分 | 
@@ -79,6 +80,13 @@ SELECT CURRENT_TIME()，运行结果为 21:26:34。
 SELECT CURRENT_TIMESTAMP()，运行结果为 2019-04-03 21:26:34。
 SELECT EXTRACT(YEAR FROM '2019-04-03')，运行结果为 2019。
 SELECT DATE('2019-04-01 12:00:05')，运行结果为 2019-04-01。
+```
+
+时间日期计算:
+```
+NOW() - INTERVAL 1 hour 表示一小时以前
+NOW() - INTERVAL 1 day  表示一天以前
+NOW() - INTERVAL 1 year 表示一年以前
 ```
 
 ## 4、转换函数

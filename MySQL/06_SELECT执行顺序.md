@@ -56,7 +56,9 @@ LIMIT 2 #顺序8
 用法：
 ```
 1、limit n -->显示几条记录
+
 2、limit m, n 或 LIMIT n OFFSET m (m 表示从第几条记录开始显示，n 表示显示几条)
+   每页显示 n 条记录, 如何显示第 m 页的内容? limit (m - 1) * n, n
 ```
 
 注意：
